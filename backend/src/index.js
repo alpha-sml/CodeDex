@@ -6,7 +6,11 @@ const auth = require("./controller/auth");
 dotenv.config();
 const app = express();
 
-app.use(cors({ origin: process.env.FRONTEND_URL }));
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+}));
+
 app.use(express.json());
 app.use("/", auth);
 
