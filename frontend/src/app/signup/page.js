@@ -16,8 +16,9 @@ export default function Signup() {
         body: JSON.stringify(form),
       });
       const data = await res.json();
-
       if (res.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("username", data.user.username);
         setMessage(data.message);
         setForm({ username: "", email: "", password: "" });
         router.push("/dashboard");
