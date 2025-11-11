@@ -1,15 +1,12 @@
+const cors = require("cors");
 const express = require("express");
 const dotenv = require("dotenv");
-const cors = require("cors");
-const auth = require("./controller/auth");
+const auth = require("./routes/auth");
 
 dotenv.config();
 const app = express();
 
-app.use(cors({
-    origin: [`http://${process.env.FRONTEND_URL}`],
-    credentials: true
-}));
+app.use(cors({ origin: process.env.FRONTEND_URL }));
 app.use(express.json());
 app.use("/", auth);
 
