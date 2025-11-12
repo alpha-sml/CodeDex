@@ -2,6 +2,7 @@ const express = require("express");
 const prisma = require("../config/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const verifyToken = require("../middleware/auth");
 
 const app = express();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -24,7 +25,7 @@ app.post("/signup", async (req, res) => {
     });
 
     const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "180d",
     });
 
     res.status(201).json({
@@ -51,7 +52,7 @@ app.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
 
     const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "180d",
     });
 
     res.status(200).json({
@@ -62,6 +63,10 @@ app.post("/login", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Internal server error" });
   }
+});
+
+app.get("/dashboard", verifyToken, (req, res) => {
+  res.json({ message: `Welcome, ${req.user.username}!` });
 });
 
 module.exports = app;
