@@ -21,7 +21,7 @@ Competitive programmers use multiple platforms to solve problems and join contes
 ## Host Links
 - Frontend: https://code-dex-ten.vercel.app/
 - Backend: https://codedex-mfrt.onrender.com
-- Database: codedex-db-sml-5097.c.aivencloud.com
+- Database: https://codedex-db-sml-5097.c.aivencloud.com
 
 ---
 
