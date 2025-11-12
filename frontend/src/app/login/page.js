@@ -16,11 +16,9 @@ export default function Login() {
         body: JSON.stringify(form),
       });
       const data = await res.json();
-      if (res.ok) {
+      if (res.ok && data.token) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("username", data.user.username);
-        setMessage(data.message);
-        setForm({ username: "", password: "" });
         router.push("/dashboard");
       } else {
         setMessage(data.error || "Something went wrong");
@@ -31,7 +29,7 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <div className="login">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <input
@@ -39,17 +37,21 @@ export default function Login() {
           value={form.username}
           onChange={(e) => setForm({ ...form, username: e.target.value })}
         />
-        <br />
         <input
           type="password"
           placeholder="Password"
           value={form.password}
           onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
-        <br />
         <button type="submit">Login</button>
       </form>
-      <p>{message}</p>
+      {message && <p className="error">{message}</p>}
+      <p>
+        New here?{" "}
+        <a href="/signup" className="switch-link">
+          Signup
+        </a>
+      </p>
     </div>
   );
 }

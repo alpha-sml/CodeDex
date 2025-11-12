@@ -3,30 +3,46 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
-  const [username, setUsername] = useState("");
+  const [data, setData] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const storedUsername = localStorage.getItem("username");
     if (!token) {
       router.push("/login");
       return;
     }
-    setUsername(storedUsername);
+
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/dashboard`, {
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    })
+      .then(async (res) => {
+        const result = await res.json();
+        if (!res.ok) {
+          localStorage.removeItem("token");
+          router.push("/login");
+          return;
+        }
+        setData(result);
+      })
+      .catch(() => setData({ message: "Network error" }));
   }, [router]);
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    router.push("/login");
-  };
-
   return (
-    <div>
+    <div className="dashboard">
       <h1>Dashboard</h1>
-      {username && <p>Welcome, {username}!</p>}
-      <button onClick={logout}>Logout</button>
+      {data ? <p>{data.message}</p> : <p>Loading...</p>}
+      <button
+        onClick={() => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("username");
+          router.push("/login");
+        }}
+      >
+        Logout
+      </button>
     </div>
   );
 }
