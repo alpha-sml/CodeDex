@@ -1,4 +1,4 @@
-# 🚀 CodeDex – Unified Competitive Programming Dashboard
+# CodeDex – Unified Competitive Programming Dashboard
 
 > **A single platform to track your coding journey across LeetCode, Codeforces, HackerRank, and more — all in one dashboard.**
 
@@ -18,7 +18,7 @@ Competitive programmers use multiple platforms to solve problems and join contes
 
 ---
 
-## Host Links
+## ⛓️ Host Links
 - Frontend: https://code-dex-ten.vercel.app/
 - Backend: https://codedex-mfrt.onrender.com
 - Database: https://codedex-db-sml-5097.c.aivencloud.com
