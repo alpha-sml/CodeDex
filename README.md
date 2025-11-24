@@ -4,8 +4,7 @@
 
 ![Next.js](https://img.shields.io/badge/Frontend-Next.js-blue?logo=next.js)
 ![Express.js](https://img.shields.io/badge/Backend-Express.js-green?logo=express)
-![Prisma](https://img.shields.io/badge/ORM-Prisma-blue?logo=prisma)
-![MySQL](https://img.shields.io/badge/Database-MySQL-005C84?logo=mysql)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-47A248?logo=mongodb&logoColor=white)
 ![Auth](https://img.shields.io/badge/Auth-JWT%20%2B%20Bcrypt-orange?logo=jsonwebtokens)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
@@ -15,13 +14,6 @@
 
 Competitive programmers use multiple platforms to solve problems and join contests — but tracking progress on each one separately is tedious.  
 **CodeDex** simplifies this by aggregating **user stats, ratings, and achievements** from platforms like **LeetCode, Codeforces, and HackerRank** into a unified, visually rich dashboard.
-
----
-
-## ⛓️ Host Links
-- Frontend: https://code-dex-ten.vercel.app/
-- Backend: https://codedex-mfrt.onrender.com
-- Database: https://codedex-db-sml-5097.c.aivencloud.com
 
 ---
 
@@ -45,12 +37,12 @@ Frontend → Backend (API) → Database → External Platform APIs
 
 - **Frontend**: Next.js with TailwindCSS for responsive and dynamic UI  
 - **Backend**: Node.js + Express.js REST API  
-- **Database**: MySQL with Prisma ORM for schema management and queries  
+- **Database**: MongoDB for flexible schema management  
 - **Authentication**: JWT + bcrypt for secure session handling  
 - **Hosting**:  
   - Frontend → Vercel  
   - Backend → Render / Railway  
-  - Database → PlanetScale / MySQL Cloud
+  - Database → MongoDB Atlas
 
 ---
 
@@ -73,7 +65,7 @@ Frontend → Backend (API) → Database → External Platform APIs
 |--------|-------------|
 | **Frontend** | Next.js, TailwindCSS |
 | **Backend** | Node.js, Express.js |
-| **Database** | MySQL + Prisma ORM |
+| **Database** | MongoDB |
 | **Authentication** | JWT, bcrypt |
 | **External APIs** | LeetCode, Codeforces, HackerRank |
 

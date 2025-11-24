@@ -1,62 +1,130 @@
 "use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { api } from "@/lib/api";
 
-export default function Signup() {
-  const [form, setForm] = useState({ username: "", email: "", password: "" });
-  const [message, setMessage] = useState("");
+import "./signup.css";
+
+export default function SignupPage() {
   const router = useRouter();
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (res.ok && data.token) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("username", data.user.username);
-        router.push("/dashboard");
+      const result = await api.signup(formData);
+      if (result.message === "Signup successful") {
+        router.push("/");
       } else {
-        setMessage(data.error || "Something went wrong");
+        setError(result.message || "Signup failed");
       }
-    } catch {
-      setMessage("Network error");
+    } catch (err) {
+      setError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="signup">
-      <h2>Signup</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          placeholder="Username"
-          value={form.username}
-          onChange={(e) => setForm({ ...form, username: e.target.value })}
-        />
-        <input
-          placeholder="Email"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-        />
-        <button type="submit">Signup</button>
-      </form>
-      {message && <p className="error">{message}</p>}
-      <p>
-        Already have an account?{" "}
-        <a href="/login" className="switch-link">
-          Login
-        </a>
-      </p>
+    <div className="container">
+      <div className="card">
+        <h1 className="title">
+          Sign Up
+        </h1>
+
+        {error && (
+          <div className="errorMessage">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="form">
+          <div>
+            <label
+              htmlFor="username"
+              className="label"
+            >
+              Username (min 5 characters)
+            </label>
+            <input
+              type="text"
+              id="username"
+              value={formData.username}
+              onChange={(e) =>
+                setFormData({ ...formData, username: e.target.value })
+              }
+              required
+              minLength={5}
+              className="input"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="email"
+              className="label"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
+              required
+              className="input"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="password"
+              className="label"
+            >
+              Password (min 6 characters)
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+              required
+              minLength={6}
+              className="input"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="submitButton"
+          >
+            {loading ? "Signing up..." : "Sign Up"}
+          </button>
+        </form>
+
+        <p className="loginText">
+          Already have an account?{" "}
+          <Link href="/login" className="loginLink">
+            Login
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,174 @@
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-primary);
+    padding: 1rem;
+}
+
+.main {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contentWrapper {
+    width: 100%;
+    max-width: 480px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    text-align: center;
+    letter-spacing: -0.5px;
+}
+
+.loadingContainer {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-primary);
+}
+
+.loadingText {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-family: var(--font-mono);
+}
+
+
+.userProfile {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.profileCard {
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+}
+
+.welcomeText {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.userDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.userDetails p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.userDetails strong {
+    color: var(--text-tertiary);
+    font-weight: 400;
+    margin-right: 0.5rem;
+}
+
+.logoutButton {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    background-color: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.logoutButton:hover {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+}
+
+
+.guestContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    background-color: var(--bg-secondary);
+    padding: 2.5rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.guestText {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.authButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.loginLink,
+.signupLink {
+    padding: 0.6rem 1rem;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-align: center;
+    width: 100%;
+    font-size: 0.95rem;
+    display: block;
+
+}
+
+.loginLink {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid transparent;
+}
+
+.loginLink:hover {
+    background-color: #4a4a4a;
+}
+
+.signupLink {
+    background-color: var(--brand-orange);
+    color: #282828;
+    border: 1px solid transparent;
+}
+
+.signupLink:hover {
+    background-color: var(--brand-orange-hover);
+}
