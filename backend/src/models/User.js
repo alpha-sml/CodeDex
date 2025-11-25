@@ -21,22 +21,34 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required"],
       minlength: 6,
     },
+    platforms: {
+      leetcode: { type: String, trim: true },
+      codeforces: { type: String, trim: true },
+    },
+    preferences: {
+      type: Map,
+      of: mongoose.Schema.Types.Mixed,
+      default: {},
+    },
+    lastSyncedAt: {
+      type: Date,
+    },
+    refreshToken: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
 
-// Hash password before saving to database
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next(); // only hash if changed or new
+  if (!this.isModified("password")) return next();
   this.password = await argon2.hash(this.password, { type: argon2.argon2id });
   next();
 });
 
-// Compare entered password with hashed one
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await argon2.verify(this.password, enteredPassword);
 };
 
-// Create and export User model
 const User = mongoose.model("User", userSchema);
 export default User;

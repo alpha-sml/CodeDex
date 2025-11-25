@@ -85,7 +85,7 @@ export default function LoginPage() {
         </form>
 
         <p className="signupText">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link href="/auth/signup" className="signup-Link">
             Sign up
           </Link>
