@@ -120,7 +120,7 @@ export default function SignupPage() {
 
         <p className="loginText">
           Already have an account?{" "}
-          <Link href="/login" className="loginLink">
+          <Link href="/auth/login" className="login-Link">
             Login
           </Link>
         </p>

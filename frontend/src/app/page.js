@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -84,13 +83,13 @@ export default function Home() {
               </p>
               <div className="authButtons">
                 <Link
-                  href="/login"
+                  href="/auth/login"
                   className="loginLink"
                 >
                   Login
                 </Link>
                 <Link
-                  href="/signup"
+                  href="/auth/signup"
                   className="signupLink"
                 >
                   signup

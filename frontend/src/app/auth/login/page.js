@@ -86,7 +86,7 @@ export default function LoginPage() {
 
         <p className="signupText">
           Don't have an account?{' '}
-          <Link href="/signup" className="signupLink">
+          <Link href="/auth/signup" className="signup-Link">
             Sign up
           </Link>
         </p>
