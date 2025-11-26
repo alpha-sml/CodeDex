@@ -1,45 +1,28 @@
-import User from '../models/User.js';
 import { clearAuthCookieOptions, authCookieOptions } from '../utils/cookieOptions.js';
-import { generateAccessToken, generateRefreshToken } from '../utils/generateToken.js';
-import jwt from 'jsonwebtoken';
+import { createUser, authenticateUser, refreshUserToken, logoutUser } from '../services/authService.js';
 
 // SIGNUP
 const signup = async (req, res) => {
   try {
     const { username, email, password } = req.body;
     if (!username || !email || !password) {
-      return res.status(400).json("All fields are require!");
+      return res.status(400).json({ message: "All fields are required" });
     }
 
-    const existingUser = await User.findOne({
-      $or: [{ email }, { username }],
-    });
+    const result = await createUser({ username, email, password });
 
-    if (existingUser) {
-      return res
-        .status(400)
-        .json({ message: "Username or email already in use" });
-    }
-
-    const newUser = await User.create({ username, email, password });
-
-    const accessToken = generateAccessToken(newUser._id);
-    const refreshToken = generateRefreshToken(newUser._id);
-    newUser.refreshToken = refreshToken;
-    await newUser.save();
-    res.cookie("accessToken", accessToken, { ...authCookieOptions, maxAge: 60 * 60 * 1000 });
-    res.cookie("refreshToken", refreshToken, { ...authCookieOptions, maxAge: 30 * 24 * 60 * 60 * 1000 });
+    res.cookie("accessToken", result.accessToken, { ...authCookieOptions, maxAge: 60 * 60 * 1000 });
+    res.cookie("refreshToken", result.refreshToken, { ...authCookieOptions, maxAge: 30 * 24 * 60 * 60 * 1000 });
 
     res.status(201).json({
       message: "Signup successful",
-      user: {
-        id: newUser._id,
-        username: newUser.username,
-        email: newUser.email,
-      },
+      user: result.user,
     });
   } catch (err) {
     console.error("Error signing up!", err);
+    if (err.message === "USERNAME_OR_EMAIL_EXISTS") {
+      return res.status(400).json({ message: "Username or email already in use" });
+    }
     return res.status(500).json({ message: "Server error", error: err.message });
   }
 };
@@ -50,35 +33,22 @@ const login = async (req, res) => {
     const { identifier, password } = req.body;
 
     if (!identifier || !password) {
-      return res
-        .status(400)
-        .json({ message: "Please provide username/email and password" });
+      return res.status(400).json({ message: "Please provide username/email and password" });
     }
 
-    const user = await User.findOne({
-      $or: [{ email: identifier }, { username: identifier }],
-    });
+    const result = await authenticateUser({ identifier, password });
 
-    if (!user || !(await user.matchPassword(password))) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    const accessToken = generateAccessToken(user._id);
-    const refreshToken = generateRefreshToken(user._id);
-    user.refreshToken = refreshToken;
-    await user.save();
-    res.cookie("accessToken", accessToken, { ...authCookieOptions, maxAge: 60 * 60 * 1000 });
-    res.cookie("refreshToken", refreshToken, { ...authCookieOptions, maxAge: 30 * 24 * 60 * 60 * 1000 }); 
+    res.cookie("accessToken", result.accessToken, { ...authCookieOptions, maxAge: 60 * 60 * 1000 });
+    res.cookie("refreshToken", result.refreshToken, { ...authCookieOptions, maxAge: 30 * 24 * 60 * 60 * 1000 });
 
     res.status(200).json({
       message: "Login successful",
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-      },
+      user: result.user,
     });
   } catch (error) {
+    if (error.message === "INVALID_CREDENTIALS") {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
     res.status(500).json({ message: error.message });
   }
 };
@@ -86,10 +56,7 @@ const login = async (req, res) => {
 // LOGOUT
 const logout = async (req, res) => {
   try {
-    if (req.user) {
-      req.user.refreshToken = null;
-      await req.user.save();
-    }
+    await logoutUser(req.user);
     
     res.clearCookie("accessToken", clearAuthCookieOptions);
     res.clearCookie("refreshToken", clearAuthCookieOptions);
@@ -99,7 +66,7 @@ const logout = async (req, res) => {
   }
 };
 
-// GET PROFILE (Protected Route)
+// GET PROFILE
 const getProfile = async (req, res) => {
   try {
     if (!req.user) {
@@ -124,21 +91,17 @@ const getProfile = async (req, res) => {
 const refreshAccessToken = async (req, res) => {
   try {
     const { refreshToken } = req.cookies;
+    const result = await refreshUserToken(refreshToken);
 
-    if (!refreshToken) {
-      return res.status(401).json({ message: "Refresh token not found" });
-    }
-
-    const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id);
-    if (!user || user.refreshToken !== refreshToken) {
-      return res.status(403).json({ message: "Invalid refresh token" });
-    }
-    const newAccessToken = generateAccessToken(user._id);
-    res.cookie("accessToken", newAccessToken, { ...authCookieOptions, maxAge: 60 * 60 * 1000 }); // 1 hour
-
+    res.cookie("accessToken", result.accessToken, { ...authCookieOptions, maxAge: 60 * 60 * 1000 });
     res.status(200).json({ message: "Access token refreshed" });
   } catch (error) {
+    if (error.message === "REFRESH_TOKEN_NOT_FOUND") {
+      return res.status(401).json({ message: "Refresh token not found" });
+    }
+    if (error.message === "INVALID_REFRESH_TOKEN") {
+      return res.status(403).json({ message: "Invalid refresh token" });
+    }
     res.status(403).json({ message: "Invalid or expired refresh token" });
   }
 };
