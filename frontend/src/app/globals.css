@@ -1,54 +1,48 @@
 :root {
-
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #282828;
-    --bg-tertiary: #3e3e3e;
-    --bg-overlay: rgba(0, 0, 0, 0.6);
-
-    --text-primary: #eff1f6;
-    --text-secondary: #b3b3b3;
-    --text-tertiary: #8a8a8a;
-
-    --brand-orange: #ffa116;
-    --brand-orange-hover: #e59113;
-
-    --accent-green: #2cbb5d;
-    --accent-red: #ef4743;
-    --accent-blue: #0a84ff;
-
-    --border-color: #3e3e3e;
-    --border-radius: 8px;
-    --border-radius-sm: 4px;
-
-    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-    --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --bg-tertiary: #1a1a1a;
+  
+  --text-primary: #ffffff;
+  --text-secondary: #b4b4b4;
+  --text-tertiary: #6b6b6b;
+  
+  --brand-orange: #ff9500;
+  --brand-orange-hover: #e08600;
+  --accent-green: #00d084;
+  --accent-red: #ff4757;
+  --accent-blue: #2196f3;
+  
+  --border-color: #2a2a2a;
+  --border-radius: 8px;
+  --border-radius-sm: 4px;
 }
 
 * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 html,
 body {
-    max-width: 100vw;
-    overflow-x: hidden;
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    font-family: var(--font-family);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
-    color: inherit;
-    text-decoration: none;
+  color: inherit;
+  text-decoration: none;
 }
 
 button {
-    font-family: inherit;
-    cursor: pointer;
-    border: none;
-    background: none;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
 }

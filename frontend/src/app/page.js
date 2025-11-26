@@ -1,14 +1,14 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { api } from "@/lib/api";
-import "./home.css";
+import FeatureCard from "@/components/FeatureCard";
+import "./landing.css";
 
 export default function Home() {
   const router = useRouter();
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -18,87 +18,138 @@ export default function Home() {
     try {
       const result = await api.getProfile();
       if (result.user) {
-        setUser(result.user);
+        setIsAuthenticated(true);
       }
     } catch (err) {
-      setUser(null);
-    } finally {
-      setLoading(false);
+      // User not authenticated, stay on landing page
+      setIsAuthenticated(false);
     }
   };
-
-  const handleLogout = async () => {
-    try {
-      await api.logout();
-      setUser(null);
-      router.push("/");
-    } catch (err) {
-      console.error("Logout error:", err);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="loadingContainer">
-        <p className="loadingText">Loading...</p>
-      </div>
-    );
-  }
 
   return (
-    <div className="container">
-      <main className="main">
-        <div className="contentWrapper">
-          <h1 className="title">
-            CodeDex
-          </h1>
-
-          {user ? (
-            <div className="userProfile">
-              <div className="profileCard">
-                <h2 className="welcomeText">
-                  Welcome, {user.username}!
-                </h2>
-                <div className="userDetails">
-                  <p>
-                    <strong>Username:</strong> {user.username}
-                  </p>
-                  <p>
-                    <strong>Email:</strong> {user.email}
-                  </p>
-
-                </div>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="logoutButton"
-              >
-                Logout
-              </button>
-            </div>
-          ) : (
-            <div className="guestContainer">
-              <p className="guestText">
-                Please login or sign up to continue.
-              </p>
-              <div className="authButtons">
-                <Link
-                  href="/auth/login"
-                  className="loginLink"
-                >
+    <div className="landing">
+      <nav className="navbar">
+        <div className="navContent">
+          <Link href="/" className="navBrand" aria-label="CodeDex Home">
+            <img src="/images/codedex.png" alt="CodeDex" className="navLogo" />
+          </Link>
+          <div className="navLinks">
+            {isAuthenticated ? (
+              <Link href="/dashboard" className="navLink navPrimary">Dashboard</Link>
+            ) : (
+              <>
+                <Link href="/auth/login" className="navLink">Login</Link>
+                <Link href="/auth/signup" className="navLink navPrimary">Sign Up</Link>
+              </>
+            )}
+          </div>
+        </div>
+      </nav>
+      {/* Hero Section */}
+      <section className="hero">
+        <div className="heroContent">
+          <div><img src="/images/pokeball.png" alt="Pokéball" className="pokeball" /></div>
+          <div><img src="/images/codedex.png" alt="CodeDex" className="heroTitle" /></div>
+          <p className="heroTagline">Gotta Solve 'Em All!</p>
+          <p className="heroDescription">
+            Track your coding progress across multiple platforms with a Pokédex-inspired interface.
+            Catch problems, level up your skills, and become the ultimate coding trainer.
+          </p>
+          <div className="heroCTA">
+            {isAuthenticated ? (
+              <Link href="/dashboard" className="ctaButton primary">
+                Open Pokédex
+              </Link>
+            ) : (
+              <>
+                <Link href="/auth/signup" className="ctaButton primary">
+                  Start Your Journey
+                </Link>
+                <Link href="/auth/login" className="ctaButton secondary">
                   Login
                 </Link>
-                <Link
-                  href="/auth/signup"
-                  className="signupLink"
-                >
-                  signup
-                </Link>
-              </div>
-            </div>
-          )}
+              </>
+            )}
+          </div>
         </div>
-      </main>
+      </section>
+
+      {/* Features Section */}
+      <section className="features">
+        <h2 className="sectionTitle">Features</h2>
+        <div className="featureGrid">
+          <FeatureCard
+            icon="/images/progress-tracker.png"
+            alt="Track Progress"
+            title="Track Progress"
+            desc="Monitor your problem-solving journey with detailed stats and visual progress tracking."
+          />
+          <FeatureCard
+            icon="/images/multiple-platform.png"
+            alt="Multiple Platforms"
+            title="Multiple Platforms"
+            desc="Connect LeetCode and Codeforces accounts to track all your problems in one place."
+          />
+          <FeatureCard
+            icon="/images/catch-calendder.png"
+            alt="Catch Calendar"
+            title="Catch Calendar"
+            desc="Visualize your daily coding activity with a heat map showing your catch streak."
+          />
+          <FeatureCard
+            icon="/images/gym-battles.png"
+            alt="Gym Battles"
+            title="Gym Battles"
+            desc="Stay updated with upcoming contests from all your connected platforms."
+          />
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="howItWorks">
+        <h2 className="sectionTitle">How It Works</h2>
+        <div className="timeline">
+          <div className="timelineItem">
+            <div className="timelineMarker">1</div>
+            <div className="timelineCard">
+              <h3 className="stepTitle">Create Account</h3>
+              <p className="stepDesc">Sign up and start your coding trainer journey.</p>
+            </div>
+          </div>
+          <div className="timelineItem">
+            <div className="timelineMarker">2</div>
+            <div className="timelineCard">
+              <h3 className="stepTitle">Connect Platforms</h3>
+              <p className="stepDesc">Link your LeetCode and Codeforces accounts.</p>
+            </div>
+          </div>
+          <div className="timelineItem">
+            <div className="timelineMarker">3</div>
+            <div className="timelineCard">
+              <h3 className="stepTitle">Catch 'Em All</h3>
+              <p className="stepDesc">Solve problems and watch your Pokédex grow!</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      {!isAuthenticated && (
+        <FeatureCard
+          className="finalCTA"
+          title="Ready to Start Your Adventure?"
+          desc="Join CodeDex and track your coding journey today!"
+        >
+          <Link href="/auth/signup" className="ctaButton primary large">
+            Get Started
+          </Link>
+        </FeatureCard>
+      )}
+
+      {/* Footer */}
+      <footer className="footer">
+        <p>&copy; 2025 CodeDex. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
