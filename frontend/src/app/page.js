@@ -45,7 +45,6 @@ export default function Home() {
           </div>
         </div>
       </nav>
-      {/* Hero Section */}
       <section className="hero">
         <div className="heroContent">
           <div><img src="/images/pokeball.png" alt="Pokéball" className="pokeball" /></div>
@@ -74,7 +73,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="features">
         <h2 className="sectionTitle">Features</h2>
         <div className="featureGrid">
@@ -105,7 +103,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How It Works Section */}
       <section className="howItWorks">
         <h2 className="sectionTitle">How It Works</h2>
         <div className="timeline">
@@ -133,7 +130,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
       {!isAuthenticated && (
         <FeatureCard
           className="finalCTA"
@@ -146,7 +142,6 @@ export default function Home() {
         </FeatureCard>
       )}
 
-      {/* Footer */}
       <footer className="footer">
         <p>&copy; 2025 CodeDex. All rights reserved.</p>
       </footer>
