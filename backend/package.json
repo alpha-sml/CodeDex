@@ -21,6 +21,7 @@
     "mongoose": "^8.19.3"
   },
   "devDependencies": {
+    "node-fetch": "^3.3.2",
     "nodemon": "^3.1.10"
   },
   "keywords": []

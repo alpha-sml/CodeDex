@@ -1,0 +1,67 @@
+/* Page-specific layout only - all components use shared styles from common.css */
+
+.filters-section {
+  background: rgba(245, 245, 245, 0.90);
+  backdrop-filter: blur(15px);
+  border: 4px solid #000000;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 8px 8px 0 0 #2B2B2B;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.7rem;
+  color: #DC0A2D;
+  letter-spacing: 0.5px;
+}
+
+.filter-input,
+.filter-select {
+  background: white;
+  color: #2B2B2B;
+  padding: 0.75rem;
+  border: 3px solid #000000;
+  border-radius: 6px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.6rem;
+  box-shadow: 4px 4px 0 0 #000000;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  outline: none;
+  border-color: #DC0A2D;
+}
+
+.results-info {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.7rem;
+  color: #2B2B2B;
+  letter-spacing: 0.5px;
+  padding-top: 1rem;
+  border-top: 3px solid #000000;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.8;
+}

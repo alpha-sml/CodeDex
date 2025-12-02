@@ -133,6 +133,21 @@ export const api = {
     return makeRequest();
   },
 
+  async updatePlatform(platform, data) {
+    const makeRequest = async () => {
+      const response = await fetch(`${API_BASE_URL}/platforms/${platform}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(data),
+      });
+      return handleResponse(response, makeRequest);
+    };
+    return makeRequest();
+  },
+
   async syncPlatform(platform) {
     const makeRequest = async () => {
       const response = await fetch(`${API_BASE_URL}/platforms/${platform}/sync`, {

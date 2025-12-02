@@ -50,23 +50,59 @@ export const addBookmark = async (req, res) => {
 
 export const getBookmarks = async (req, res) => {
   try {
-    const { platform, difficulty } = req.query;
+    const { 
+      platform, 
+      difficulty, 
+      search,
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+      page = 1,
+      limit = 10
+    } = req.query;
 
     const filter = { userId: req.user._id };
     
+    // Filter by platform
     if (platform && platform !== 'all') {
       filter.platform = platform.toLowerCase();
     }
     
+    // Filter by difficulty
     if (difficulty && difficulty !== 'all') {
       filter.difficulty = difficulty.toLowerCase();
     }
 
-    const bookmarks = await Bookmark.find(filter).sort({ createdAt: -1 });
+    // Search by problem name (case-insensitive)
+    if (search && search.trim()) {
+      filter.problemName = { $regex: search.trim(), $options: 'i' };
+    }
+
+    // Calculate pagination
+    const pageNum = parseInt(page);
+    const limitNum = parseInt(limit);
+    const skip = (pageNum - 1) * limitNum;
+
+    // Determine sort order
+    const sortOptions = {};
+    const validSortFields = ['createdAt', 'difficulty', 'problemName', 'platform'];
+    const sortField = validSortFields.includes(sortBy) ? sortBy : 'createdAt';
+    sortOptions[sortField] = sortOrder === 'asc' ? 1 : -1;
+
+    // Get total count for pagination
+    const totalCount = await Bookmark.countDocuments(filter);
+
+    // Fetch bookmarks with pagination and sorting
+    const bookmarks = await Bookmark.find(filter)
+      .sort(sortOptions)
+      .skip(skip)
+      .limit(limitNum);
 
     res.status(200).json({
       success: true,
       count: bookmarks.length,
+      total: totalCount,
+      page: pageNum,
+      pages: Math.ceil(totalCount / limitNum),
       bookmarks,
     });
   } catch (error) {

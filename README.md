@@ -13,76 +13,44 @@
 
 ## 📘 Overview
 
-CodeDex is a **retro pixel-themed coding tracker** that transforms your competitive programming journey into a Pokémon adventure! Track your solved problems across LeetCode and Codeforces, visualize your progress with an activity heatmap, and watch your Pokédex grow as you catch more problems.
+CodeDex is a **retro pixel-themed coding tracker** inspired by Pokémon that helps you track solved problems across LeetCode and Codeforces. Features a Pokédex interface for your problem collection, Gym Battles for upcoming contests, and comprehensive stats tracking.
 
-### 🎨 Design Theme
-- **Retro Pixel Art** - Inspired by classic Pokémon games with Press Start 2P font
-- **Pokédex Interface** - Problems are "caught Pokémon" in your collection
-- **Gym Battles** - Upcoming coding contests across platforms
-- **Catch Calendar** - Heatmap showing your daily coding activity
+🔗 **Live Demo**: [https://code-dex-ten.vercel.app](https://code-dex-ten.vercel.app)
 
 ---
 
 ## 🧩 Features
 
-### ✅ Implemented
+### ✅ Core Features
 
-#### 🎨 Frontend
-| Feature | Description |
-|---------|-------------|
-| 🏠 **Landing Page** | Retro pixel-themed landing with hero, features, timeline, and CTA sections |
-| 🔐 **Auth Pages** | Pixel-styled login and signup forms with retro game aesthetics |
-| 📊 **Dashboard** | Main overview with stats cards, activity heatmap, and recent catches |
-| 🎮 **Platforms Page** | Connect/manage LeetCode and Codeforces accounts |
-| 📝 **Problems Page** | Your Pokédex - view all caught problems |
-| ⚔️ **Contests Page** | Gym Battles - upcoming contests across platforms |
-| 🎯 **Components** | Reusable FeatureCard and Navbar components |
-| 📱 **Responsive Design** | Mobile-optimized layouts with retro pixel styling |
+**Frontend**
+- 🏠 Retro pixel-themed landing, auth, and dashboard pages
+- 📊 Dashboard with stats cards and sync button
+- 🎮 Platform management (LeetCode, Codeforces) with real-time stats
+- 📝 Full CRUD Pokédex with URL-based bookmarking, search, filters, sorting, pagination
+- ⚔️ Live upcoming contests from multiple platforms
+- 🧩 7 reusable components with centralized styling
 
-#### 🔧 Backend
-| Feature | Description |
-|---------|-------------|
-| 🔐 **Authentication** | JWT refresh tokens (1h access, 30d refresh) with Argon2 hashing |
-| 🏗️ **Architecture** | Service layer pattern for maintainable code |
-| 👤 **User Management** | Signup, login, logout, profile endpoints |
-| 💾 **Database Models** | User, Platform, Bookmark, ProgressSnapshot models |
-| 🍪 **Security** | HTTP-only secure cookies, CORS configured |
-
-### 🚧 In Progress
-| Feature | Status |
-|---------|---------|
-| 🌐 **Platform Integration** | LeetCode & Codeforces API integration |
-| 📈 **Activity Heatmap** | Interactive contribution-style calendar |
-| 🔗 **Connect Platforms** | Modal/form for platform connection |
-| 📊 **Real Data Display** | Fetch and display actual problems/contests |
+**Backend**
+- 🔐 JWT auth (1h access, 30d refresh) with Argon2 hashing
+- 🌐 LeetCode GraphQL + Codeforces REST API integration
+- 📊 Real-time stats aggregation and sync
+- 🔖 Advanced bookmark system with filters and pagination
+- 🏗️ Service layer architecture with MongoDB
 
 ### 📋 Roadmap
-- 🎯 Problem filtering by difficulty, tags, platform
-- 🏆 Contest notifications and reminders
-- 📈 Rating graphs and progress visualization
-- 🌟 Achievement badges and milestones
+- 📈 Activity heatmap and progress graphs
+- 🏆 Achievement system and contest reminders
 - ➕ Additional platforms (HackerRank, CodeChef, AtCoder)
-- 🎨 More Pokémon-themed animations and effects
+- 👥 Friend system and leaderboards---
 
----
-
-## 🏗️ System Architecture
+## 🏗️ Architecture
 
 ```
-Frontend (Next.js) → Backend (Express.js) → Database (MongoDB) → External APIs
-                          ↓
-                    Service Layer
-                    (Business Logic)
+Next.js 16 (Frontend) → Express.js (Backend) → MongoDB → LeetCode/Codeforces APIs
 ```
 
-- **Frontend**: Next.js with custom CSS for responsive UI  
-- **Backend**: Node.js + Express.js with service-oriented architecture
-- **Database**: MongoDB with Mongoose ODM  
-- **Authentication**: JWT (access + refresh tokens) + Argon2id password hashing  
-- **Hosting**:  
-  - Frontend → Vercel  
-  - Backend → Render  
-  - Database → MongoDB Atlas
+**Stack**: Next.js 16 • React 19 • Express.js • MongoDB • JWT + Argon2 • LeetCode/Codeforces APIs
 
 ---
 
@@ -104,70 +72,59 @@ Frontend (Next.js) → Backend (Express.js) → Database (MongoDB) → External 
 ### 🎮 Platform Management (Protected)
 | Endpoint | Method | Description |
 |-----------|---------|-------------|
-| `/api/platforms` | GET | Get all connected platforms for user |
-| `/api/platforms` | POST | Add/update platform connection |
-| `/api/platforms/:id` | DELETE | Remove platform connection |
+| `/api/platforms` | GET | Get all connected platforms with stats |
+| `/api/platforms` | POST | Add/connect new platform (LeetCode, Codeforces) |
+| `/api/platforms/:platform` | PUT | Update platform username |
+| `/api/platforms/:platform` | DELETE | Disconnect platform |
+| `/api/platforms/:platform/sync` | POST | Force sync platform stats from external API |
+| `/api/platforms/stats` | GET | Get aggregated stats across all platforms |
 
 ### 📝 Bookmarks (Protected)
 | Endpoint | Method | Description |
 |-----------|---------|-------------|
-| `/api/bookmarks` | GET | Get all bookmarked problems |
-| `/api/bookmarks` | POST | Add problem bookmark |
+| `/api/bookmarks` | GET | Get bookmarks with pagination, search, sort, filter |
+| `/api/bookmarks` | POST | Add problem bookmark with URL extraction |
+| `/api/bookmarks/:id` | PUT | Update bookmark notes and tags |
 | `/api/bookmarks/:id` | DELETE | Remove bookmark |
 
 ### ⚔️ Contests (Protected)
 | Endpoint | Method | Description |
 |-----------|---------|-------------|
-| `/api/contests` | GET | Get upcoming contests from all platforms |
+| `/api/contests` | GET | Get upcoming contests (all platforms or filtered) |
 
-### 🚧 Coming Soon
-| Endpoint | Method | Description |
-|-----------|---------|-------------|
-| `/api/user/stats` | GET | Get aggregated stats from all platforms |
-| `/api/platforms/:platform/sync` | POST | Force refresh platform stats |
-| `/api/problems` | GET | Get all solved problems |
+### Query Parameters (Bookmarks)
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `page` | number | Page number for pagination (default: 1) |
+| `limit` | number | Items per page (default: 10) |
+| `search` | string | Search by problem name (regex) |
+| `platform` | string | Filter by platform (leetcode, codeforces) |
+| `difficulty` | string | Filter by difficulty (easy, medium, hard) |
+| `sortBy` | string | Sort field (createdAt, problemName, difficulty, platform) |
+| `sortOrder` | string | Sort direction (asc, desc) |
 
 ---
 
 ## 💻 Tech Stack
 
-### Frontend
-- **Framework**: Next.js 16 with App Router
-- **UI Library**: React 19
-- **Styling**: Custom CSS with retro pixel theme
-- **Font**: Press Start 2P (Google Fonts)
-- **Components**: Reusable component architecture
-- **Routing**: File-based routing with nested layouts
+**Frontend**: Next.js 16 (Turbopack) • React 19 • Custom CSS with glass morphism • Press Start 2P font
 
-### Backend
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Architecture**: Service layer pattern
-- **Database**: MongoDB with Mongoose ODM
-- **Authentication**: JWT (access + refresh tokens)
-- **Password Hashing**: Argon2id
-- **Security**: CORS, HTTP-only cookies
+**Backend**: Node.js • Express.js • MongoDB (Mongoose) • JWT + Argon2id
 
-### External APIs (Planned)
-- LeetCode GraphQL API
-- Codeforces REST API
+**APIs**: LeetCode GraphQL • Codeforces REST
+
+**Key Features**: Service layer architecture • 7 reusable components • Advanced filtering & pagination • Real-time stats sync
 
 ---
 
-## 🚀 Architecture Highlights
+## ✨ Key Highlights
 
-### Frontend
-- **Retro Pixel Theme**: Press Start 2P font, pixel borders, retro shadows, translucent cards
-- **Component Reusability**: Shared components for cards, navigation, layouts
-- **Responsive Design**: Mobile-first approach with breakpoints
-- **Client-Side Routing**: Fast navigation with Next.js App Router
-
-### Backend
-- **Service Layer Pattern**: Business logic separated from controllers
-- **Refresh Token Flow**: Secure 1-hour access tokens with 30-day refresh tokens
-- **Cookie-based Auth**: HTTP-only secure cookies prevent XSS attacks
-- **Argon2id Hashing**: Industry-standard password security
-- **Model Layer**: Clean Mongoose schemas with hooks and methods
+- 🎨 **Retro Design**: Glass morphism cards, pixel borders, Press Start 2P font
+- 🧩 **Component Library**: 7 reusable components with centralized styling
+- 🔗 **Smart URL Parsing**: Automatic problem extraction from LeetCode/Codeforces URLs
+- 🔐 **Secure Auth**: JWT refresh tokens + Argon2id hashing + HTTP-only cookies
+- 🌐 **API Integration**: LeetCode GraphQL + Codeforces REST with real-time sync
+- 🔍 **Advanced Filtering**: Search, sort, paginate bookmarks by platform/difficulty
 
 ---
 
@@ -179,35 +136,68 @@ CodeDex/
 │   ├── src/
 │   │   ├── app/
 │   │   │   ├── auth/
-│   │   │   │   ├── login/         # Login page with pixel theme
-│   │   │   │   └── signup/        # Signup page with pixel theme
+│   │   │   │   ├── login/          # Login page with pixel theme
+│   │   │   │   └── signup/         # Signup page with pixel theme
 │   │   │   ├── dashboard/
-│   │   │   │   ├── page.js        # Main dashboard (overview)
-│   │   │   │   ├── platforms/     # Platform management page
-│   │   │   │   ├── problems/      # Your Pokédex page
-│   │   │   │   ├── contests/      # Gym Battles page
-│   │   │   │   └── dashboard.css  # Shared dashboard styles
-│   │   │   ├── page.js            # Landing page
-│   │   │   ├── landing.css        # Landing page styles
-│   │   │   └── globals.css        # Global styles
+│   │   │   │   ├── page.js         # Main dashboard with stats & sync
+│   │   │   │   ├── platforms/      # Platform management with ConnectModal
+│   │   │   │   ├── problems/       # Full CRUD Pokédex with filters
+│   │   │   │   ├── contests/       # Gym Battles with live contest data
+│   │   │   │   ├── dashboard.css   # Shared dashboard styles
+│   │   │   │   └── problems.css    # Problems page styles
+│   │   │   ├── page.js             # Landing page
+│   │   │   ├── landing.css         # Landing page styles
+│   │   │   ├── layout.js           # Root layout
+│   │   │   └── globals.css         # Global styles
 │   │   ├── components/
-│   │   │   ├── FeatureCard.js     # Reusable feature card
-│   │   │   ├── Navbar.js          # Navigation component
-│   │   │   └── styles/            # Component-specific styles
+│   │   │   ├── common/
+│   │   │   │   ├── Button.js       # Reusable button with variants
+│   │   │   │   ├── Card.js         # Glass morphism card wrapper
+│   │   │   │   ├── StatCard.js     # Dashboard stat display
+│   │   │   │   ├── Badge.js        # Platform & difficulty badges
+│   │   │   │   ├── Modal.js        # Reusable modal component
+│   │   │   │   ├── FormField.js    # Labeled form field
+│   │   │   │   └── Table.js        # Table with pagination
+│   │   │   ├── styles/
+│   │   │   │   └── common.css      # Centralized theme & utilities
+│   │   │   ├── DashboardLayout.js  # Dashboard sidebar layout
+│   │   │   ├── ConnectPlatformModal.js  # Platform connection modal
+│   │   │   ├── FeatureCard.js      # Landing page feature card
+│   │   │   └── Navbar.js           # Navigation component
 │   │   └── lib/
-│   │       └── api.js             # API utility functions
+│   │       └── api.js              # API client with auth
 │   └── public/
-│       └── images/                # Logos and assets
+│       └── images/                 # Logos and assets
 ├── backend/
 │   ├── src/
-│   │   ├── controllers/           # Route controllers
-│   │   ├── services/              # Business logic layer
-│   │   ├── models/                # MongoDB schemas
-│   │   ├── routes/                # API routes
-│   │   ├── middleware/            # Auth middleware
-│   │   ├── utils/                 # Helper functions
-│   │   └── config/                # Database config
-│   └── server.js                  # Express server
+│   │   ├── controllers/
+│   │   │   ├── authController.js   # Auth endpoints
+│   │   │   ├── platformController.js  # Platform CRUD + sync
+│   │   │   ├── bookmarkController.js  # Bookmark CRUD with filters
+│   │   │   └── contestController.js   # Contest fetching
+│   │   ├── services/
+│   │   │   ├── authService.js      # Auth business logic
+│   │   │   ├── platformService.js  # LeetCode & Codeforces API
+│   │   │   └── contestService.js   # Contest aggregation
+│   │   ├── models/
+│   │   │   ├── User.js             # User schema with hooks
+│   │   │   ├── Platform.js         # Platform connection schema
+│   │   │   ├── Bookmark.js         # Problem bookmark schema
+│   │   │   └── ProgressSnapshot.js # Historical progress data
+│   │   ├── routes/
+│   │   │   ├── authRoutes.js       # /api/auth routes
+│   │   │   ├── platformRoutes.js   # /api/platforms routes
+│   │   │   ├── bookmarkRoutes.js   # /api/bookmarks routes
+│   │   │   └── contestRoutes.js    # /api/contests routes
+│   │   ├── middleware/
+│   │   │   └── authMiddleware.js   # JWT verification
+│   │   ├── utils/
+│   │   │   ├── generateToken.js    # JWT token generation
+│   │   │   └── cookieOptions.js    # Secure cookie config
+│   │   ├── config/
+│   │   │   └── db.js               # MongoDB connection
+│   │   └── server.js               # Express app entry
+│   └── package.json
 └── README.md
 ```
 
@@ -254,13 +244,11 @@ pnpm dev
 
 ## 🌍 Deployment
 
-| Component | Platform | Status |
-|------------|-----------|---------|
-| Frontend | Vercel | Planned |
-| Backend | Render | Planned |
-| Database | MongoDB Atlas | Planned |
-
----
+| Component | Platform | Link |
+|------------|-----------|------|
+| Frontend | Vercel | [code-dex-ten.vercel.app](https://code-dex-ten.vercel.app) |
+| Backend | Render | Live |
+| Database | MongoDB Atlas | Live |---
 
 ## 📜 License
 

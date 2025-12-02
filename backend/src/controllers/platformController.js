@@ -116,6 +116,79 @@ export const listPlatforms = async (req, res) => {
   }
 };
 
+// UPDATE PLATFORM
+export const updatePlatform = async (req, res) => {
+  try {
+    const { platform } = req.params;
+    const { username } = req.body;
+    const userId = req.user._id;
+    const platformLower = platform.toLowerCase();
+
+    if (!['leetcode', 'codeforces'].includes(platformLower)) {
+      return res.status(400).json({ message: 'Invalid platform' });
+    }
+
+    if (!username) {
+      return res.status(400).json({ message: 'Username is required' });
+    }
+
+    const platformDoc = await Platform.findOne({ userId, platform: platformLower });
+
+    if (!platformDoc) {
+      return res.status(404).json({ message: 'Platform not connected' });
+    }
+
+    // Fetch stats for the new username
+    let stats;
+    try {
+      if (platformLower === 'leetcode') {
+        stats = await fetchLeetCodeStats(username);
+      } else if (platformLower === 'codeforces') {
+        stats = await fetchCodeforcesStats(username);
+      }
+    } catch (error) {
+      if (error.message.includes('NOT_FOUND')) {
+        return res.status(404).json({ message: `User not found on ${platform}` });
+      }
+      return res.status(500).json({ message: `Failed to fetch ${platform} stats` });
+    }
+
+    // Update user document
+    await User.findByIdAndUpdate(userId, {
+      [`platforms.${platformLower}`]: username,
+      lastSyncedAt: new Date(),
+    });
+
+    // Update platform document
+    const normalizedStats = normalizeStats(stats);
+    platformDoc.username = username;
+    platformDoc.stats = normalizedStats;
+    platformDoc.lastFetched = new Date();
+    platformDoc.error = null;
+    await platformDoc.save();
+
+    // Create progress snapshot
+    await ProgressSnapshot.create({
+      userId,
+      platform: platformLower,
+      stats: normalizedStats,
+      date: new Date(),
+    });
+
+    res.status(200).json({
+      message: `${platform} updated successfully`,
+      platform: {
+        platform: platformDoc.platform,
+        username: platformDoc.username,
+        stats: normalizedStats,
+        lastFetched: platformDoc.lastFetched,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // SYNC PLATFORM
 export const syncPlatform = async (req, res) => {
   try {
