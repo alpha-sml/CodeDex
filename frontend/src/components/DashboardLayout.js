@@ -56,19 +56,27 @@ export default function DashboardLayout({ children }) {
         </div>
         <nav className="sidebarNav">
           <Link href="/dashboard" className={`navItem ${isActive("/dashboard") ? "active" : ""}`}>
-            <span className="navIcon">📊</span>
+            <span className="navIcon">
+              <img src="/images/overview.png" alt="Overview" style={{ width: "24px", height: "24px" }} />
+            </span>
             <span>Overview</span>
           </Link>
           <Link href="/dashboard/platforms" className={`navItem ${isActive("/dashboard/platforms") ? "active" : ""}`}>
-            <span className="navIcon">🎮</span>
+            <span className="navIcon">
+              <img src="/images/platform.png" alt="Platforms" style={{ width: "24px", height: "24px" }} />
+            </span>
             <span>Platforms</span>
           </Link>
           <Link href="/dashboard/problems" className={`navItem ${isActive("/dashboard/problems") ? "active" : ""}`}>
-            <span className="navIcon">📝</span>
+            <span className="navIcon">
+              <img src="/images/problems.png" alt="Problems" style={{ width: "24px", height: "24px" }} />
+            </span>
             <span>Problems</span>
           </Link>
           <Link href="/dashboard/contests" className={`navItem ${isActive("/dashboard/contests") ? "active" : ""}`}>
-            <span className="navIcon">⚔️</span>
+            <span className="navIcon">
+              <img src="/images/gym-battles.png" alt="Contests" style={{ width: "24px", height: "24px" }} />
+            </span>
             <span>Contests</span>
           </Link>
         </nav>

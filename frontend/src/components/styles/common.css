@@ -47,7 +47,7 @@
 .card--hover:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
 
 .stat { text-align: center; padding: 2rem; }
-.stat__icon { font-size: 3rem; margin-bottom: 1rem; }
+.stat__icon { font-size: 3rem; margin-bottom: 1rem; width: 64px; height: 64px; margin-left: auto; margin-right: auto; }
 .stat__value { font-family: var(--font); font-size: 1.5rem; color: var(--color-red); margin-bottom: 0.5rem; }
 .stat__label { font-family: var(--font); font-size: 0.75rem; color: #2B2B2B; letter-spacing: 0.5px; }
 

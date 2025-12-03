@@ -54,13 +54,13 @@
 }
 
 .sidebarHeader {
-    padding: 2rem 1.5rem;
+    padding: 1rem 1rem;
     border-bottom: 3px solid var(--retro-border);
     text-align: center;
 }
 
 .sidebarLogo {
-    height: 3rem;
+    height: 5rem;
     width: auto;
 }
 

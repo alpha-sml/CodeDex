@@ -57,7 +57,10 @@ export default function ContestsPage() {
   return (
     <DashboardLayout>
       <header className="dashboardHeader">
-        <h1 className="dashboardTitle">Gym Battles</h1>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "0.5rem" }}>
+          <img src="/images/gym-battles.png" alt="Gym Battles" style={{ width: "48px", height: "48px" }} />
+          <h1 className="dashboardTitle" style={{ margin: 0 }}>Gym Battles</h1>
+        </div>
         <p className="dashboardSubtitle">Upcoming coding contests across platforms</p>
       </header>
 

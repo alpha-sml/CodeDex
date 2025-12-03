@@ -109,7 +109,7 @@ export default function DashboardPage() {
         </header>
         
         <Button onClick={handleSyncStats} disabled={syncing} loading={syncing}>
-          🔄 Sync Stats
+          Sync Stats
         </Button>
       </div>
 
@@ -119,9 +119,9 @@ export default function DashboardPage() {
 
         <section className="statsSection">
           <div className="statsGrid">
-            <StatCard icon="🎯" label="Problems Caught" value={stats.totalProblems} />
-            <StatCard icon="🔥" label="Day Streak" value="Coming Soon" />
-            <StatCard icon="🎮" label="Platforms Connected" value={stats.platformsConnected} />
+            <StatCard iconSrc="/images/problem-caught.png" label="Problems Caught" value={stats.totalProblems} />
+            <StatCard iconSrc="/images/streak.png" label="Day Streak" value="Coming Soon" />
+            <StatCard iconSrc="/images/platform.png" label="Platforms Connected" value={stats.platformsConnected} />
           </div>
         </section>
 
