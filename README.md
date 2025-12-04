@@ -247,7 +247,7 @@ pnpm dev
 | Component | Platform | Link |
 |------------|-----------|------|
 | Frontend | Vercel | [code-dex-ten.vercel.app](https://code-dex-ten.vercel.app) |
-| Backend | Render | Live |
+| Backend | Render | [codedex-mfrt.onrender.com](https://codedex-mfrt.onrender.com) |
 | Database | MongoDB Atlas | Live |---
 
 ## 📜 License
